@@ -1,6 +1,4 @@
-
 package AST;
-
 
 abstract public class Type {
     private String name;

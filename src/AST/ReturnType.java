@@ -1,6 +1,4 @@
-
 package AST;
-
 
 public class ReturnType  extends Type{
     private Type type;

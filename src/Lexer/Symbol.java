@@ -1,7 +1,5 @@
 package Lexer;
 
-
-
 public class Symbol {
 
    public final static int

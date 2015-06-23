@@ -4,7 +4,6 @@ import java.io.*;
 
 public class CompilerError {
 
-
     public CompilerError( Lexer lexer, PrintWriter out ) {
           // output of an error is done in out
         this.lexer = lexer;
@@ -26,7 +25,7 @@ public class CompilerError {
     public void show( String strMessage ) {
         show( strMessage, false);
     }
-    
+
 
     public void show( String strMessage, boolean goPreviousToken ) {
         // is goPreviousToken is true, the error is signalled at the line of the

@@ -1,14 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package AST;
 
-/**
- *
- * @author 317276
- */
 public class Assignment extends Statement{
     public Assignment(LeftValue lf, Expression expr, boolean hasSemicolon){
         this.lf = lf;

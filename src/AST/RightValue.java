@@ -1,4 +1,3 @@
-
 package AST;
 
 public class RightValue extends Factor{

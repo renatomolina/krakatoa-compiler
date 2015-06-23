@@ -3,10 +3,8 @@ package Comp;
 import AST.ReturnStat;
 import AST.*;
 import Lexer.*;
-
 import java.io.*;
 import java.util.*;
-
 
 public class Compiler {
 
@@ -19,13 +17,12 @@ public class Compiler {
        lexer = new Lexer(input, error);
        error.setLexer(lexer);
 
-
        Program p = null;
        try {
           lexer.nextToken();
           if ( lexer.token == Symbol.EOF )
              error.show("Unexpected EOF");
-          p = program(); 
+          p = program();
                     if ( lexer.token != Symbol.EOF ) {
              p = null;
              error.show("EOF expected");
@@ -36,7 +33,7 @@ public class Compiler {
               // a production compiler.
 
            //   e.printStackTrace();
-                 
+
           p = null;
        }
 
@@ -47,7 +44,7 @@ public class Compiler {
    private Program program() throws ClassNotFoundException {
      // Program ::=  ClassDec { ClassDec }
       ClassDec classDec = classDec();
-      symbolTable.putInGlobal(classDec.getName(), classDec);      
+      symbolTable.putInGlobal(classDec.getName(), classDec);
       ArrayList<ClassDec> cdList = new ArrayList<ClassDec>();
       while ( lexer.token == Symbol.CLASS ){
           ClassDec cD = classDec();
@@ -129,7 +126,7 @@ public class Compiler {
          Member m = null;
          if ( lexer.token == Symbol.LEFTPAR ){
             m = methodDec(t, id, qualifier);
-             ArrayList<Statement> aux = m.getList().getList();             
+             ArrayList<Statement> aux = m.getList().getList();
       if(t.getType() !=null){
           for(Statement s:aux){
               System.out.println(s.getClass().getName());
@@ -150,16 +147,16 @@ public class Compiler {
 
       if ( lexer.token != Symbol.RIGHTCURBRACKET )
          error.show("public/private or \"}\" expected");
-      lexer.nextToken();       
+      lexer.nextToken();
        classDec.setMemberList(new MemberList(mArray));
       return classDec;
    }
 
 
    private InstVarDec instanceVarDec( Type type, Id id, boolean isStatic ) {
-      //   InstVarDec ::= [ "static"  ] "private"  Type  IdList  ";"      
+      //   InstVarDec ::= [ "static"  ] "private"  Type  IdList  ";"
       IdList idL;
-      ArrayList<Id> ids = new ArrayList<Id>();      
+      ArrayList<Id> ids = new ArrayList<Id>();
       if(type.getType() == null)
           error.show("type expected");
       while ( lexer.token == Symbol.COMMA ) {
@@ -187,13 +184,13 @@ public class Compiler {
       ReturnType rt = new ReturnType(type);
       FormalParamDec fParamDec = null;
       if ( lexer.token != Symbol.LEFTPAR ){
-          error.show("( expected");          
+          error.show("( expected");
       }
            lexer.nextToken();
          fParamDec = formalParamDec();
       if ( lexer.token != Symbol.RIGHTPAR )
          error.show(") expected");
-      lexer.nextToken();     
+      lexer.nextToken();
       if ( lexer.token != Symbol.LEFTCURBRACKET )
          error.show("{ expected");
 
@@ -220,7 +217,7 @@ public class Compiler {
    }
 
    private FormalParamDec formalParamDec() {
-      //  FormalParamDec ::= ParamDec { "," ParamDec }                
+      //  FormalParamDec ::= ParamDec { "," ParamDec }
                 if(lexer.token == Symbol.RIGHTPAR)
                     return new FormalParamDec(null,null);
       ParamDec param = paramDec();
@@ -261,7 +258,7 @@ public class Compiler {
                break;
             case Symbol.IDENT :
                //# corrija: faça uma busca na TS para buscar a classe
-               // IDENT deve ser uma classe.                
+               // IDENT deve ser uma classe.
                if(symbolTable.getInGlobal(lexer.getStringValue()) == null &&
                        symbolTable.getInLocal(lexer.getStringValue()) == null)
                    error.show("Cannot find type");
@@ -339,7 +336,7 @@ public class Compiler {
              id = id(lexer.getStringValue());
              lexer.nextToken();
              if(lexer.token == Symbol.ASSIGN){
-                 id2 = id(lexer.getStringValue());                 
+                 id2 = id(lexer.getStringValue());
                  st = assignment(new LeftValue(id, id2, true));
              }
              else st = messageSendStatement("this", id);
@@ -368,9 +365,9 @@ public class Compiler {
              }
              break;
          case Symbol.SUPER :
-            lexer.nextToken(); 
+            lexer.nextToken();
             /*if(lexer.token != Symbol.DOT)
-                error.show(". expected");            
+                error.show(". expected");
             lexer.nextToken();
             if(lexer.token != Symbol.IDENT)
                 error.show("ident expected");
@@ -428,7 +425,7 @@ public class Compiler {
    private IdList idList(){
         Id id = id(lexer.getStringValue());
         lexer.nextToken();
-        ArrayList<Id> idList = new ArrayList<Id>();        
+        ArrayList<Id> idList = new ArrayList<Id>();
         while(lexer.token == Symbol.COMMA){
             lexer.nextToken();
             idList.add(id(lexer.getStringValue()));
@@ -481,7 +478,7 @@ public class Compiler {
                }
     //}
             if(lexer.token != Symbol.DOT)
-                error.show(". expected");            
+                error.show(". expected");
             lexer.nextToken();
             if(lexer.token != Symbol.IDENT)
                 error.show("ident expected");
@@ -527,9 +524,9 @@ public class Compiler {
             return new MessageSendStatement(RM,id,exprList);
                }
             }
-            //lexer.nextToken();            
+            //lexer.nextToken();
             if(lexer.token != Symbol.DOT)
-                error.show(". expected");            
+                error.show(". expected");
             lexer.nextToken();
             if(lexer.token != Symbol.IDENT)
                 error.show("ident expected");
@@ -593,12 +590,12 @@ public class Compiler {
       lexer.nextToken();
       if ( lexer.token != Symbol.LEFTPAR )
          error.show("( expected");
-      lexer.nextToken();       
-      LeftValue lf = leftValue();       
+      lexer.nextToken();
+      LeftValue lf = leftValue();
       ArrayList<LeftValue> lfList = new ArrayList<LeftValue>();
       while ( lexer.token == Symbol.COMMA ) {
           lexer.nextToken();
-          lfList.add(leftValue());          
+          lfList.add(leftValue());
       }
 
       if ( lexer.token != Symbol.RIGHTPAR )
@@ -618,8 +615,8 @@ public class Compiler {
            lexer.nextToken();
        }
 
-       if(lexer.token != Symbol.IDENT){            
-          error.show("ident expected");           
+       if(lexer.token != Symbol.IDENT){
+          error.show("ident expected");
        }
        Id id = id(lexer.getStringValue());
        lexer.nextToken();
@@ -661,7 +658,7 @@ public class Compiler {
 
    private ExpressionList exprList() {
       // ExpressionList ::= Expression { "," Expression }
-      Expression expr = expr();      
+      Expression expr = expr();
       ArrayList<Expression> exprList = new ArrayList<Expression>();
       while ( lexer.token == Symbol.COMMA ) {
          lexer.nextToken();
@@ -719,7 +716,7 @@ public class Compiler {
 
          hoList.add(new HighOperator(op));
          sfList.add(signalFactor());
-         
+
       }
       return new Term(left,hoList,sfList);
    }
@@ -730,7 +727,7 @@ public class Compiler {
       int op = -1;
       if ( (op = lexer.token) == Symbol.PLUS || op == Symbol.MINUS ) {
 
-         lexer.nextToken();       
+         lexer.nextToken();
       }
       Factor f = factor();
         return new SignalFactor(op, f);
@@ -750,7 +747,7 @@ public class Compiler {
         ObjectCreation ::= ``new" Id ``("  ``)"
       */
       Factor e;
-      Id id = null;     
+      Id id = null;
       //MethodDec aMethod;
       switch ( lexer.token ) {
          case Symbol.TRUE :
@@ -771,14 +768,14 @@ public class Compiler {
               lexer.nextToken();
               if(lexer.token == Symbol.DOT){
                   lexer.nextToken();
-                  if(lexer.token == Symbol.IDENT){                       
+                  if(lexer.token == Symbol.IDENT){
                       id = id(lexer.getStringValue());
                       lexer.nextToken();
                       if(lexer.token == Symbol.DOT || lexer.token == Symbol.LEFTPAR){
                         return messageSend("this",id);
                       }else
                           return new RightValue(null,id);
-                  
+
                   }
               }
              // lexer.nextToken();
@@ -787,9 +784,9 @@ public class Compiler {
             Id id2 = null;
             String str;
             str = lexer.getStringValue();
-            
+
             lexer.nextToken();
-            
+
             if(lexer.token == Symbol.DOT){
                 lexer.nextToken();
                 if(lexer.token != Symbol.IDENT)
@@ -803,7 +800,7 @@ public class Compiler {
             }
  else{
                 id = id(str);
-                
+
                  return new RightValue(id,id2);
              }
 
@@ -818,7 +815,7 @@ public class Compiler {
                             Expression expr;
                         if(lexer.token != Symbol.RIGHTPAR )
                             expr = expr();
-                        else{                                
+                        else{
                             expr = null;
                             lexer.nextToken();
                           }
@@ -876,14 +873,14 @@ public class Compiler {
             é importante não utilizar className, uma string e sim aClass, um objeto.
             */
             return new ObjectCreation(id);
-   
+
                default :
                   error.show(CompilerError.identifier_expected);
                }
                return null;
          }
 
-   
+
 
 
 
