@@ -6,7 +6,7 @@ Here is a simple piece of code of krakatoa
 
 ```Java
 class A {
-private int i;      
+  private int i;      
   public int get() {
     return this.i;
   }
