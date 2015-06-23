@@ -2,7 +2,7 @@
 
 This is a compiler from a small language called krakatoa
 
-Here is some code of language
+Here is a simple piece of code of krakatoa
 
 ```Java
 class A {
