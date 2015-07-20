@@ -14,8 +14,8 @@ class A {
   public void put(int i) {
     this.i=i;
   }
-  
 }
+
 class Program{
   public void run() {
     A object;
@@ -26,5 +26,4 @@ class Program{
     write(k);
   }
 }
-
 ```
